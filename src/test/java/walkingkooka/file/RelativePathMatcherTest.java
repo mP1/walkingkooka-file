@@ -22,6 +22,7 @@ import walkingkooka.ToStringTesting;
 import walkingkooka.predicate.Predicates;
 import walkingkooka.reflect.ClassTesting;
 import walkingkooka.reflect.JavaVisibility;
+import walkingkooka.text.CaseSensitivity;
 
 import java.nio.file.Paths;
 
@@ -118,7 +119,10 @@ public final class RelativePathMatcherTest implements ClassTesting<RelativePathM
         this.checkEquals(
                 expected,
                 RelativePathMatcher.with(
-                        Files2.globPatterns(glob),
+                        Files2.globPatterns(
+                                glob,
+                                CaseSensitivity.SENSITIVE
+                        ),
                         Paths.get(parentPath)
                 ).matches(Paths.get(test)),
                 () -> parentPath + " " + glob + " matches " + test
@@ -131,7 +135,10 @@ public final class RelativePathMatcherTest implements ClassTesting<RelativePathM
     public void testToString() {
         this.toStringAndCheck(
                 RelativePathMatcher.with(
-                        Files2.globPatterns("*.txt\n*.ini"),
+                        Files2.globPatterns(
+                                "*.txt\n*.ini",
+                                CaseSensitivity.SENSITIVE
+                        ),
                         Paths.get("/var/home")
                 ),
                 "/var/home *.txt | *.ini"

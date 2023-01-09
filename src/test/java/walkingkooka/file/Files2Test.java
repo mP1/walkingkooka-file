@@ -21,6 +21,7 @@ import org.junit.jupiter.api.Test;
 import walkingkooka.predicate.PredicateTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
+import walkingkooka.text.CaseSensitivity;
 
 import java.lang.reflect.Method;
 import java.util.function.Predicate;
@@ -30,10 +31,23 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public final class Files2Test implements PublicStaticHelperTesting<Files2>, PredicateTesting {
 
     @Test
-    public void testGlobPatternsWithNullFails() {
+    public void testGlobPatternsWithNullFileContentFails() {
         assertThrows(
                 NullPointerException.class,
-                () -> Files2.globPatterns(null)
+                () -> Files2.globPatterns(
+                        null,
+                        CaseSensitivity.SENSITIVE
+                )
+        );
+    }
+
+    public void testGlobPatternsWithNullCaseSensitivityFails() {
+        assertThrows(
+                NullPointerException.class,
+                () -> Files2.globPatterns(
+                        "",
+                        null
+                )
         );
     }
 
@@ -43,11 +57,41 @@ public final class Files2Test implements PublicStaticHelperTesting<Files2>, Pred
                 "\n" +
                 "path-to/file/*.txt\n";
 
-        final Predicate<String> predicate = Files2.globPatterns(content);
+        final Predicate<String> predicate = Files2.globPatterns(
+                content,
+                CaseSensitivity.SENSITIVE
+        );
 
         this.testTrue(
                 predicate,
                 "path-to/file/file123.txt"
+        );
+
+        this.testFalse(
+                predicate,
+                "path-to/wrong/file123.txt"
+        );
+
+        this.testFalse(
+                predicate,
+                "path-to/file/file123.doc"
+        );
+    }
+
+    @Test
+    public void testGlobPatternsWithPatternsCaseInsensitive() {
+        final String content = "# comment 1a\n" +
+                "\n" +
+                "path-to/file/*.txt\n";
+
+        final Predicate<String> predicate = Files2.globPatterns(
+                content,
+                CaseSensitivity.INSENSITIVE
+        );
+
+        this.testTrue(
+                predicate,
+                "path-to/file/file123.TXT"
         );
 
         this.testFalse(
@@ -69,8 +113,27 @@ public final class Files2Test implements PublicStaticHelperTesting<Files2>, Pred
                 "*.txt\n";
 
         this.checkEquals(
-                Files2.globPatterns(content).toString(),
+                Files2.globPatterns(
+                        content,
+                        CaseSensitivity.SENSITIVE
+                ).toString(),
                 "*.rtf | *.txt"
+        );
+    }
+
+    @Test
+    public void testGlobPatternToStringCaseInsensitive() {
+        final String content = "# comment 1a\n" +
+                "\n" +
+                "*.rtf\n" +
+                "*.txt\n";
+
+        this.checkEquals(
+                Files2.globPatterns(
+                        content,
+                        CaseSensitivity.INSENSITIVE
+                ).toString(),
+                "*.rtf | *.txt (" + CaseSensitivity.INSENSITIVE + ")"
         );
     }
 
