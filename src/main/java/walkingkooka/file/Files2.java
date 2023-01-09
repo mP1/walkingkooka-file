@@ -18,32 +18,42 @@
 package walkingkooka.file;
 
 import walkingkooka.collect.list.Lists;
+import walkingkooka.predicate.Predicates;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.text.CaseSensitivity;
-import walkingkooka.text.GlobPattern;
 
 import java.util.List;
+import java.util.function.Predicate;
 
 public final class Files2 implements PublicStaticHelper {
 
     /**
      * Accepts the content of a file containing glob patterns.
      */
-    public static List<GlobPattern> globPatterns(final String fileContent) {
-        final List<GlobPattern> patterns = Lists.array();
+    public static Predicate<String> globPatterns(final String fileContent) {
+        final Predicate<String>[] predicate = new Predicate[]{
+                Predicates.never()
+        };
+
+        final List<String> patterns = Lists.array();
 
         new TextFileWithCommentsVisitor() {
 
             @Override
             public void visitNonEmptyLine(final String pattern) {
-                patterns.add(
-                        CaseSensitivity.INSENSITIVE.globPattern(pattern, '\\')
-                );
+                predicate[0] =
+                        predicate[0].or(
+                                CaseSensitivity.INSENSITIVE.globPattern(pattern, '\\')
+                        );
+                patterns.add(pattern);
             }
 
         }.accept(fileContent);
 
-        return Lists.array();
+        return Predicates.customToString(
+                predicate[0],
+                String.join(" | ", patterns)
+        );
     }
 
     private Files2() {
