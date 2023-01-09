@@ -17,17 +17,17 @@
 
 package walkingkooka.file;
 
-import org.junit.Test;
-import walkingkooka.collect.list.Lists;
+import org.junit.jupiter.api.Test;
+import walkingkooka.predicate.PredicateTesting;
 import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
-import walkingkooka.text.CaseSensitivity;
 
 import java.lang.reflect.Method;
+import java.util.function.Predicate;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class Files2Test implements PublicStaticHelperTesting<Files2> {
+public final class Files2Test implements PublicStaticHelperTesting<Files2>, PredicateTesting {
 
     @Test
     public void testGlobPatternsWithNullFails() {
@@ -43,11 +43,34 @@ public final class Files2Test implements PublicStaticHelperTesting<Files2> {
                 "\n" +
                 "path-to/file/*.txt\n";
 
+        final Predicate<String> predicate = Files2.globPatterns(content);
+
+        this.testTrue(
+                predicate,
+                "path-to/file/file123.txt"
+        );
+
+        this.testFalse(
+                predicate,
+                "path-to/wrong/file123.txt"
+        );
+
+        this.testFalse(
+                predicate,
+                "path-to/file/file123.doc"
+        );
+    }
+
+    @Test
+    public void testGlobPatternToString() {
+        final String content = "# comment 1a\n" +
+                "\n" +
+                "*.rtf\n" +
+                "*.txt\n";
+
         this.checkEquals(
-                Lists.of(
-                        CaseSensitivity.INSENSITIVE.globPattern("path-to/file/*.txt", '\\')
-                ),
-                Files2.globPatterns(content)
+                Files2.globPatterns(content).toString(),
+                "*.rtf | *.txt"
         );
     }
 
