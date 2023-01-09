@@ -22,6 +22,8 @@ import walkingkooka.predicate.Predicates;
 import walkingkooka.reflect.PublicStaticHelper;
 import walkingkooka.text.CaseSensitivity;
 
+import java.nio.file.Path;
+import java.nio.file.PathMatcher;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -53,6 +55,17 @@ public final class Files2 implements PublicStaticHelper {
         return Predicates.customToString(
                 predicate[0],
                 String.join(" | ", patterns)
+        );
+    }
+
+    /**
+     * {@see RelativePathMatcher}
+     */
+    public static PathMatcher relativePathMatcher(final Predicate<String> patterns,
+                                                  final Path path) {
+        return RelativePathMatcher.with(
+                patterns,
+                path
         );
     }
 
