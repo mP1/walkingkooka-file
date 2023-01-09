@@ -25,6 +25,7 @@ import walkingkooka.text.CaseSensitivity;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public final class Files2 implements PublicStaticHelper {
@@ -32,7 +33,11 @@ public final class Files2 implements PublicStaticHelper {
     /**
      * Accepts the content of a file containing glob patterns.
      */
-    public static Predicate<String> globPatterns(final String fileContent) {
+    public static Predicate<String> globPatterns(final String fileContent,
+                                                 final CaseSensitivity caseSensitivity) {
+        Objects.requireNonNull(fileContent, "fileContent");
+        Objects.requireNonNull(caseSensitivity, "caseSensitivity");
+
         final Predicate<String>[] predicate = new Predicate[]{
                 Predicates.never()
         };
@@ -45,7 +50,7 @@ public final class Files2 implements PublicStaticHelper {
             public void visitNonEmptyLine(final String pattern) {
                 predicate[0] =
                         predicate[0].or(
-                                CaseSensitivity.INSENSITIVE.globPattern(pattern, '\\')
+                                caseSensitivity.globPattern(pattern, '\\')
                         );
                 patterns.add(pattern);
             }
@@ -54,7 +59,7 @@ public final class Files2 implements PublicStaticHelper {
 
         return Predicates.customToString(
                 predicate[0],
-                String.join(" | ", patterns)
+                String.join(" | ", patterns) + (CaseSensitivity.INSENSITIVE == caseSensitivity ? " (INSENSITIVE)" : "")
         );
     }
 
