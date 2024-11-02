@@ -50,7 +50,7 @@ public final class Files2 implements PublicStaticHelper {
             public void visitNonEmptyLine(final String pattern) {
                 predicate[0] =
                         predicate[0].or(
-                                caseSensitivity.globPattern(pattern, '\\')
+                                caseSensitivity.globPattern(pattern)
                         );
                 patterns.add(pattern);
             }
