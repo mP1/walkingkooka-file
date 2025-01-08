@@ -39,7 +39,7 @@ public final class Files2 implements PublicStaticHelper {
         Objects.requireNonNull(caseSensitivity, "caseSensitivity");
 
         final Predicate<String>[] predicate = new Predicate[]{
-                Predicates.never()
+            Predicates.never()
         };
 
         final List<String> patterns = Lists.array();
@@ -49,17 +49,17 @@ public final class Files2 implements PublicStaticHelper {
             @Override
             public void visitNonEmptyLine(final String pattern) {
                 predicate[0] =
-                        predicate[0].or(
-                                caseSensitivity.globPattern(pattern)
-                        );
+                    predicate[0].or(
+                        caseSensitivity.globPattern(pattern)
+                    );
                 patterns.add(pattern);
             }
 
         }.accept(fileContent);
 
         return Predicates.customToString(
-                predicate[0],
-                String.join(" | ", patterns) + (CaseSensitivity.INSENSITIVE == caseSensitivity ? " (INSENSITIVE)" : "")
+            predicate[0],
+            String.join(" | ", patterns) + (CaseSensitivity.INSENSITIVE == caseSensitivity ? " (INSENSITIVE)" : "")
         );
     }
 
@@ -69,8 +69,8 @@ public final class Files2 implements PublicStaticHelper {
     public static PathMatcher relativePathMatcher(final Predicate<String> patterns,
                                                   final Path path) {
         return RelativePathMatcher.with(
-                patterns,
-                path
+            patterns,
+            path
         );
     }
 

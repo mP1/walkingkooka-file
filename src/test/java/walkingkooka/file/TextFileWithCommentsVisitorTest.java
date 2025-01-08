@@ -46,14 +46,14 @@ public final class TextFileWithCommentsVisitorTest implements VisitorTesting<Tex
             }
 
         }.accept(
-                "# comment\n\n content 123"
+            "# comment\n\n content 123"
         );
 
         this.checkEquals(
-                Lists.of(
-                        "# comment", "", " content 123"
-                ),
-                lines
+            Lists.of(
+                "# comment", "", " content 123"
+            ),
+            lines
         );
     }
 
@@ -82,17 +82,17 @@ public final class TextFileWithCommentsVisitorTest implements VisitorTesting<Tex
 
 
         }.accept(
-                "# " + comment1 + " \n" +
-                        "#  " + comment2 + "   \n"
+            "# " + comment1 + " \n" +
+                "#  " + comment2 + "   \n"
         );
 
         this.checkEquals(
-                Lists.of(
-                        comment1,
-                        comment2
-                ),
-                comments,
-                "comments"
+            Lists.of(
+                comment1,
+                comment2
+            ),
+            comments,
+            "comments"
         );
     }
 
@@ -121,17 +121,17 @@ public final class TextFileWithCommentsVisitorTest implements VisitorTesting<Tex
 
 
         }.accept(
-                " " + nonEmptyLine1 + " \n" +
-                        "  " + nonEmptyLine2 + "   \n"
+            " " + nonEmptyLine1 + " \n" +
+                "  " + nonEmptyLine2 + "   \n"
         );
 
         this.checkEquals(
-                Lists.of(
-                        nonEmptyLine1,
-                        nonEmptyLine2
-                ),
-                nonEmptyLines,
-                "nonEmptyLines"
+            Lists.of(
+                nonEmptyLine1,
+                nonEmptyLine2
+            ),
+            nonEmptyLines,
+            "nonEmptyLines"
         );
     }
 
@@ -163,34 +163,34 @@ public final class TextFileWithCommentsVisitorTest implements VisitorTesting<Tex
                 nonEmptyLines.add(text);
             }
         }.accept(
-                "#" + comment1 + "\n" +
-                        "\n" +
-                        '#' + comment2 + "\n" +
-                        nonEmptyLine1 + "\n" +
-                        "\n" +
-                        nonEmptyLine2
+            "#" + comment1 + "\n" +
+                "\n" +
+                '#' + comment2 + "\n" +
+                nonEmptyLine1 + "\n" +
+                "\n" +
+                nonEmptyLine2
         );
 
         this.checkEquals(
-                2,
-                emptyLines.get(),
-                "emptyLines"
+            2,
+            emptyLines.get(),
+            "emptyLines"
         );
         this.checkEquals(
-                Lists.of(
-                        comment1,
-                        comment2
-                ),
-                comments,
-                "comments"
+            Lists.of(
+                comment1,
+                comment2
+            ),
+            comments,
+            "comments"
         );
         this.checkEquals(
-                Lists.of(
-                        nonEmptyLine1,
-                        nonEmptyLine2
-                ),
-                nonEmptyLines,
-                "nonEmptyLines"
+            Lists.of(
+                nonEmptyLine1,
+                nonEmptyLine2
+            ),
+            nonEmptyLines,
+            "nonEmptyLines"
         );
     }
 
