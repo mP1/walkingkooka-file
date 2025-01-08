@@ -33,82 +33,82 @@ public final class RelativePathMatcherTest implements ClassTesting<RelativePathM
     @Test
     public void testWithNullPredicateFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> RelativePathMatcher.with(
-                        null,
-                        Paths.get("/var/temp")
-                )
+            NullPointerException.class,
+            () -> RelativePathMatcher.with(
+                null,
+                Paths.get("/var/temp")
+            )
         );
     }
 
     @Test
     public void testWithNullParentPathFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> RelativePathMatcher.with(
-                        Predicates.fake(),
-                        null
-                )
+            NullPointerException.class,
+            () -> RelativePathMatcher.with(
+                Predicates.fake(),
+                null
+            )
         );
     }
 
     @Test
     public void testNotUnderParentFalse() {
         this.matchAndCheck(
-                "*.txt",
-                "/var/home/mP",
-                "/different",
-                false
+            "*.txt",
+            "/var/home/mP",
+            "/different",
+            false
         );
     }
 
     @Test
     public void testParentPathTrue() {
         this.matchAndCheck(
-                "*",
-                "/var/home/mP",
-                "/var/home/mP",
-                true
+            "*",
+            "/var/home/mP",
+            "/var/home/mP",
+            true
         );
     }
 
     @Test
     public void testChildPathTrue() {
         this.matchAndCheck(
-                "*.txt",
-                "/var/home",
-                "/var/home/file.txt",
-                true
+            "*.txt",
+            "/var/home",
+            "/var/home/file.txt",
+            true
         );
     }
 
     @Test
     public void testChildPathFalse() {
         this.matchAndCheck(
-                "*.txt",
-                "/var/home",
-                "/var/home/file.wrong.ext",
-                false
+            "*.txt",
+            "/var/home",
+            "/var/home/file.wrong.ext",
+            false
         );
     }
 
     @Test
     public void testDescendantPathTrue() {
         this.matchAndCheck(
-                "**/*.txt",
-                "/var/home",
-                "/var/home/sub/file.txt",
-                true
+            "**/*.txt",
+            "/var/home",
+            "/var/home/sub/file.txt",
+            true
         );
     }
 
     @Test
     public void testDescendantPathFalse() {
         this.matchAndCheck(
-                "**/*.txt",
-                "/var/home",
-                "/var/home/sub/file.wrong.ext",
-                false
+            "**/*.txt",
+            "/var/home",
+            "/var/home/sub/file.wrong.ext",
+            false
         );
     }
 
@@ -117,15 +117,15 @@ public final class RelativePathMatcherTest implements ClassTesting<RelativePathM
                                final String test,
                                final boolean expected) {
         this.checkEquals(
-                expected,
-                RelativePathMatcher.with(
-                        Files2.globPatterns(
-                                glob,
-                                CaseSensitivity.SENSITIVE
-                        ),
-                        Paths.get(parentPath)
-                ).matches(Paths.get(test)),
-                () -> parentPath + " " + glob + " matches " + test
+            expected,
+            RelativePathMatcher.with(
+                Files2.globPatterns(
+                    glob,
+                    CaseSensitivity.SENSITIVE
+                ),
+                Paths.get(parentPath)
+            ).matches(Paths.get(test)),
+            () -> parentPath + " " + glob + " matches " + test
         );
     }
 
@@ -134,14 +134,14 @@ public final class RelativePathMatcherTest implements ClassTesting<RelativePathM
     @Test
     public void testToString() {
         this.toStringAndCheck(
-                RelativePathMatcher.with(
-                        Files2.globPatterns(
-                                "*.txt\n*.ini",
-                                CaseSensitivity.SENSITIVE
-                        ),
-                        Paths.get("/var/home")
+            RelativePathMatcher.with(
+                Files2.globPatterns(
+                    "*.txt\n*.ini",
+                    CaseSensitivity.SENSITIVE
                 ),
-                "/var/home *.txt | *.ini"
+                Paths.get("/var/home")
+            ),
+            "/var/home *.txt | *.ini"
         );
     }
 

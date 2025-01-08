@@ -33,107 +33,107 @@ public final class Files2Test implements PublicStaticHelperTesting<Files2>, Pred
     @Test
     public void testGlobPatternsWithNullFileContentFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Files2.globPatterns(
-                        null,
-                        CaseSensitivity.SENSITIVE
-                )
+            NullPointerException.class,
+            () -> Files2.globPatterns(
+                null,
+                CaseSensitivity.SENSITIVE
+            )
         );
     }
 
     public void testGlobPatternsWithNullCaseSensitivityFails() {
         assertThrows(
-                NullPointerException.class,
-                () -> Files2.globPatterns(
-                        "",
-                        null
-                )
+            NullPointerException.class,
+            () -> Files2.globPatterns(
+                "",
+                null
+            )
         );
     }
 
     @Test
     public void testGlobPatternsWithPatterns() {
         final String content = "# comment 1a\n" +
-                "\n" +
-                "path-to/file/*.txt\n";
+            "\n" +
+            "path-to/file/*.txt\n";
 
         final Predicate<String> predicate = Files2.globPatterns(
-                content,
-                CaseSensitivity.SENSITIVE
+            content,
+            CaseSensitivity.SENSITIVE
         );
 
         this.testTrue(
-                predicate,
-                "path-to/file/file123.txt"
+            predicate,
+            "path-to/file/file123.txt"
         );
 
         this.testFalse(
-                predicate,
-                "path-to/wrong/file123.txt"
+            predicate,
+            "path-to/wrong/file123.txt"
         );
 
         this.testFalse(
-                predicate,
-                "path-to/file/file123.doc"
+            predicate,
+            "path-to/file/file123.doc"
         );
     }
 
     @Test
     public void testGlobPatternsWithPatternsCaseInsensitive() {
         final String content = "# comment 1a\n" +
-                "\n" +
-                "path-to/file/*.txt\n";
+            "\n" +
+            "path-to/file/*.txt\n";
 
         final Predicate<String> predicate = Files2.globPatterns(
-                content,
-                CaseSensitivity.INSENSITIVE
+            content,
+            CaseSensitivity.INSENSITIVE
         );
 
         this.testTrue(
-                predicate,
-                "path-to/file/file123.TXT"
+            predicate,
+            "path-to/file/file123.TXT"
         );
 
         this.testFalse(
-                predicate,
-                "path-to/wrong/file123.txt"
+            predicate,
+            "path-to/wrong/file123.txt"
         );
 
         this.testFalse(
-                predicate,
-                "path-to/file/file123.doc"
+            predicate,
+            "path-to/file/file123.doc"
         );
     }
 
     @Test
     public void testGlobPatternToString() {
         final String content = "# comment 1a\n" +
-                "\n" +
-                "*.rtf\n" +
-                "*.txt\n";
+            "\n" +
+            "*.rtf\n" +
+            "*.txt\n";
 
         this.checkEquals(
-                Files2.globPatterns(
-                        content,
-                        CaseSensitivity.SENSITIVE
-                ).toString(),
-                "*.rtf | *.txt"
+            Files2.globPatterns(
+                content,
+                CaseSensitivity.SENSITIVE
+            ).toString(),
+            "*.rtf | *.txt"
         );
     }
 
     @Test
     public void testGlobPatternToStringCaseInsensitive() {
         final String content = "# comment 1a\n" +
-                "\n" +
-                "*.rtf\n" +
-                "*.txt\n";
+            "\n" +
+            "*.rtf\n" +
+            "*.txt\n";
 
         this.checkEquals(
-                Files2.globPatterns(
-                        content,
-                        CaseSensitivity.INSENSITIVE
-                ).toString(),
-                "*.rtf | *.txt (" + CaseSensitivity.INSENSITIVE + ")"
+            Files2.globPatterns(
+                content,
+                CaseSensitivity.INSENSITIVE
+            ).toString(),
+            "*.rtf | *.txt (" + CaseSensitivity.INSENSITIVE + ")"
         );
     }
 

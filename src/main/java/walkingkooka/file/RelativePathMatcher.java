@@ -31,8 +31,8 @@ final class RelativePathMatcher implements PathMatcher {
     static RelativePathMatcher with(final Predicate<String> patterns,
                                     final Path parent) {
         return new RelativePathMatcher(
-                Objects.requireNonNull(patterns, "patterns"),
-                Objects.requireNonNull(parent, "parent")
+            Objects.requireNonNull(patterns, "patterns"),
+            Objects.requireNonNull(parent, "parent")
         );
     }
 
@@ -47,11 +47,11 @@ final class RelativePathMatcher implements PathMatcher {
         final Path parent = this.parent;
 
         return test.startsWith(parent) &&
-                this.patterns.test(
-                        parent.relativize(test)
-                                .toString()
-                                .replace(File.separatorChar, '/')
-                );
+            this.patterns.test(
+                parent.relativize(test)
+                    .toString()
+                    .replace(File.separatorChar, '/')
+            );
     }
 
     private final Predicate<String> patterns;
