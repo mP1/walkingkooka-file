@@ -19,7 +19,6 @@ package walkingkooka.file;
 
 import org.junit.jupiter.api.Test;
 import walkingkooka.predicate.PredicateTesting;
-import walkingkooka.reflect.JavaVisibility;
 import walkingkooka.reflect.PublicStaticHelperTesting;
 import walkingkooka.text.CaseSensitivity;
 
@@ -140,11 +139,6 @@ public final class Files2Test implements PublicStaticHelperTesting<Files2>, Pred
     @Override
     public Class<Files2> type() {
         return Files2.class;
-    }
-
-    @Override
-    public JavaVisibility typeVisibility() {
-        return JavaVisibility.PUBLIC;
     }
 
     @Override
