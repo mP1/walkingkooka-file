@@ -28,7 +28,8 @@ import java.nio.file.Paths;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public final class RelativePathMatcherTest implements ClassTesting<RelativePathMatcher>, ToStringTesting<RelativePathMatcher> {
+public final class RelativePathMatcherTest implements ClassTesting<RelativePathMatcher>,
+    ToStringTesting {
 
     @Test
     public void testWithNullPredicateFails() {

@@ -194,11 +194,6 @@ public final class TextFileWithCommentsVisitorTest implements VisitorTesting<Tex
         );
     }
 
-    @Override
-    public void testCheckToStringOverridden() {
-        throw new UnsupportedOperationException();
-    }
-
     // VisitingTesting..................................................................................................
 
     @Override
